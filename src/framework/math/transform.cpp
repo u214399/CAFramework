@@ -54,7 +54,21 @@ mat4 transform_to_mat4(const Transform& t)
 	// TODO
 	// ..
 
-	return mat4();
+	// Create identity matrix
+	mat4 result;
+	result.position = vec4(t.position, 1.f);
+
+	// multiply each basis vector by the quaternion v3 = quarternion * vec3 ti rotate
+
+	vec3 forward = ; // mutiply r by sx, u by sy, f by sz
+	vec3 right = ;
+	vec3 up = ;
+
+	// add scale multiply by another matrix containing sx, sy, sz in diagonal  to obtain rotation scale matrix
+
+
+	// create final mat4
+	return result;
 }
 
 vec3 transform_point(const Transform& a, const vec3& b)

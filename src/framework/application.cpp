@@ -20,19 +20,79 @@ void Application::init(GLFWwindow* window)
     camera = new Camera();
     camera->look_at(vec3(0.f, 1.5f, 7.f), vec3(0.f, 0.0f, 0.f), vec3(0.f, 1.f, 0.f));
     camera->set_perspective(45.f, window_width / (float)window_height, 0.1f, 500.f);
-
     /* ADD ENTITIES TO THE SCENE */
-    Entity* example = new Entity("Example");
-    example->mesh = Mesh::get("res/meshes/sphere.obj");
-    example->material = new FlatMaterial();
-    example->set_transform(Transform());
-    entity_list.push_back(example);
+
+// Add spheres
+    Entity* dot_ent = new Entity("Dot Sphere");
+    dot_ent->mesh = Mesh::get("res/meshes/sphere.obj");
+    dot_ent->material = new FlatMaterial();
+    dot_ent->set_transform(Transform(vec3(-3.f, 0.f, 0.f), quat(), vec3(1.f)));
+    entity_list.push_back(dot_ent);
+
+    Entity* cross_ent = new Entity("Cross Sphere");
+    cross_ent->mesh = Mesh::get("res/meshes/sphere.obj");
+    cross_ent->material = new NormalMaterial();
+    cross_ent->set_transform(Transform(vec3(-1.f, 0.f, 0.f), quat(), vec3(1.f)));
+    entity_list.push_back(cross_ent);
+
+    Entity* quat_ent = new Entity("Quat Sphere");
+    quat_ent->mesh = Mesh::get("res/meshes/sphere.obj");
+    quat_ent->material = new NormalMaterial();
+    quat_ent->set_transform(Transform(vec3(1.f, 0.f, 0.f), quat(), vec3(1.f)));
+    entity_list.push_back(quat_ent);
+
+    Entity* lerp_ent = new Entity("Lerp Sphere");
+    lerp_ent->mesh = Mesh::get("res/meshes/sphere.obj");
+    lerp_ent->material = new FlatMaterial();
+    lerp_ent->set_transform(Transform(vec3(3.f, 0.f, 0.f), quat(), vec3(1.f)));
+    entity_list.push_back(lerp_ent);
+
+    // Then, add debug lines (so they are rendered on top of the previous entities)
+    LineHelper* dot_l1 = new LineHelper(vec3(-3.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
+    dot_l1->color = vec4(1.f, 0.f, 0.f, 1.f);
+    dot_l1->unlocked = false;
+    entity_list.push_back(dot_l1);
+
+    LineHelper* dot_l2 = new LineHelper(vec3(-3.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
+    entity_list.push_back(dot_l2);
+
+    LineHelper* cross_l3 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
+    cross_l3->color = vec4(1.f, 0.f, 0.f, 1.f);
+    cross_l3->unlocked = false;
+    entity_list.push_back(cross_l3);
+
+    LineHelper* cross_l4 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
+    entity_list.push_back(cross_l4);
+
+    LineHelper* cross_l5 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(1.f, 0.f, 0.f));
+    cross_l5->color = vec4(0.f, 1.f, 0.f, 1.f);
+    cross_l5->unlocked = false;
+    entity_list.push_back(cross_l5);
+
+    LineHelper* quat_l6 = new LineHelper(vec3(1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
+    quat_l6->color = vec4(1.f, 0.f, 0.f, 1.f);
+    quat_l6->unlocked = false;
+    entity_list.push_back(quat_l6);
+
+    LineHelper* quat_l7 = new LineHelper(vec3(1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
+    entity_list.push_back(quat_l7);
 }
 
 void Application::update(float dt)
 {
     float curr_time = glfwGetTime();
 
+    vec3 first_vector = entity_list[4]->as<LineHelper>()->end;
+    vec3 second_vector = entity_list[5]->as<LineHelper>()->end;
+
+
+    entity_list[0]->material->color.x = dot(first_vector, second_vector);
+    
+ /*   vec3 sphere_up = vec3(entity_list[0]->get_model().forward.x, entity_list[0]->get_model().forward.y, entity_list[0]->get_model().forward.z);
+    vec3 sphere_forward = vec3(entity_list[0]->get_model().up.x, entity_list[0]->get_model().up.y, entity_list[0]->get_model().up.z);
+
+    entity_list[0]->material->color.x = dot(sphere_up, sphere_forward);*/
+    
     // Update entities of the scene
     for (unsigned int i = 0; i < entity_list.size(); i++) {
         entity_list[i]->update(dt);
