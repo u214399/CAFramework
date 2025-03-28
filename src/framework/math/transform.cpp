@@ -43,13 +43,27 @@ Transform mix(const Transform& a, const Transform& b, float t)
 Transform mat4_to_transform(const mat4& m)
 {
 	// TODO
-	// ..
-
 	Transform result;
 
-	vec4 forward = m.forward;
-	vec4 right = m.right;
-	vec4 up = m.up;
+	// Extract the translation from the matrix
+	result.position = vec3(m.position.x, m.position.y, m.position.z);
+
+	// Extract the rotation from the matrix
+	result.rotation = mat4_to_quat(m);
+	
+	// Compute the inverse rotation matrix then obtain the scale matrix S = MR^-1
+	mat4 r_inverse;
+	r_inverse.right = m.right;
+	r_inverse.up = m.up;
+	r_inverse.forward = m.forward;
+	invert(r_inverse);
+	mat4 scale;
+	scale = m * r_inverse;
+
+	result.scale.x = scale.right.x;
+	result.scale.y = scale.up.y;
+	result.scale.z = scale.forward.z;
+
 	return result;
 }
 
@@ -57,22 +71,22 @@ Transform mat4_to_transform(const mat4& m)
 mat4 transform_to_mat4(const Transform& t)
 {
 	// TODO
-	// ..
-
-	//// Create identity matrix
+	// Create identity matrix
 	mat4 result;
-	//result.position = vec4(t.position, 1.f);
 
-	//// multiply each basis vector by the quaternion v3 = quarternion * vec3 ti rotate
+	// Set translation
+	result.position = vec4(t.position, 1.f);
 
-	//vec3 forward = ; // mutiply r by sx, u by sy, f by sz
-	//vec3 right = ;
-	//vec3 up = ;
+	// Multiply each unit vector by the quaternion to obtain the rotation in each axis
+	vec3 right = t.rotation * vec3(1, 0, 0);
+	vec3 up = t.rotation * vec3(0, 1, 0);
+	vec3 forward = t.rotation * vec3(0, 0, 1); 
+	
+	// Add scale by multiplying the previously obtained vectors by the scale vector. (same as multiplying the matrix by a scale matrix with sx, sy, sz in diagonal)
+	result.right = vec4(t.scale.x  * right,0.0f); // mutiply right by sx, up by sy, forward by sz
+	result.up = vec4(t.scale.y * up, 0.0f);
+	result.forward = vec4(t.scale.z * forward, 0.0f);
 
-	// add scale multiply by another matrix containing sx, sy, sz in diagonal  to obtain rotation scale matrix
-
-
-	// create final mat4
 	return result;
 }
 
