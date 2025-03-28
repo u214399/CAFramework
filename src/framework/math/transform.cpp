@@ -45,7 +45,12 @@ Transform mat4_to_transform(const mat4& m)
 	// TODO
 	// ..
 
-	return Transform();
+	Transform result;
+
+	vec4 forward = m.forward;
+	vec4 right = m.right;
+	vec4 up = m.up;
+	return result;
 }
 
 // Converts a transform into a mat4
@@ -54,15 +59,15 @@ mat4 transform_to_mat4(const Transform& t)
 	// TODO
 	// ..
 
-	// Create identity matrix
+	//// Create identity matrix
 	mat4 result;
-	result.position = vec4(t.position, 1.f);
+	//result.position = vec4(t.position, 1.f);
 
-	// multiply each basis vector by the quaternion v3 = quarternion * vec3 ti rotate
+	//// multiply each basis vector by the quaternion v3 = quarternion * vec3 ti rotate
 
-	vec3 forward = ; // mutiply r by sx, u by sy, f by sz
-	vec3 right = ;
-	vec3 up = ;
+	//vec3 forward = ; // mutiply r by sx, u by sy, f by sz
+	//vec3 right = ;
+	//vec3 up = ;
 
 	// add scale multiply by another matrix containing sx, sy, sz in diagonal  to obtain rotation scale matrix
 

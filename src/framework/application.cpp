@@ -56,26 +56,26 @@ void Application::init(GLFWwindow* window)
     LineHelper* dot_l2 = new LineHelper(vec3(-3.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
     entity_list.push_back(dot_l2);
 
-    LineHelper* cross_l3 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
-    cross_l3->color = vec4(1.f, 0.f, 0.f, 1.f);
-    cross_l3->unlocked = false;
-    entity_list.push_back(cross_l3);
+    //LineHelper* cross_l3 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
+    //cross_l3->color = vec4(1.f, 0.f, 0.f, 1.f);
+    //cross_l3->unlocked = false;
+    //entity_list.push_back(cross_l3);
 
-    LineHelper* cross_l4 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
-    entity_list.push_back(cross_l4);
+    //LineHelper* cross_l4 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
+    //entity_list.push_back(cross_l4);
 
-    LineHelper* cross_l5 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(1.f, 0.f, 0.f));
-    cross_l5->color = vec4(0.f, 1.f, 0.f, 1.f);
-    cross_l5->unlocked = false;
-    entity_list.push_back(cross_l5);
+    //LineHelper* cross_l5 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(1.f, 0.f, 0.f));
+    //cross_l5->color = vec4(0.f, 1.f, 0.f, 1.f);
+    //cross_l5->unlocked = false;
+    //entity_list.push_back(cross_l5);
 
-    LineHelper* quat_l6 = new LineHelper(vec3(1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
-    quat_l6->color = vec4(1.f, 0.f, 0.f, 1.f);
-    quat_l6->unlocked = false;
-    entity_list.push_back(quat_l6);
+    //LineHelper* quat_l6 = new LineHelper(vec3(1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
+    //quat_l6->color = vec4(1.f, 0.f, 0.f, 1.f);
+    //quat_l6->unlocked = false;
+    //entity_list.push_back(quat_l6);
 
-    LineHelper* quat_l7 = new LineHelper(vec3(1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
-    entity_list.push_back(quat_l7);
+    //LineHelper* quat_l7 = new LineHelper(vec3(1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
+    //entity_list.push_back(quat_l7);
 }
 
 void Application::update(float dt)
