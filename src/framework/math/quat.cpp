@@ -272,9 +272,34 @@ quat look_rotation(const vec3& direction, const vec3& up)
 mat4 quat_to_mat4(const quat& q)
 {
 	// TODO
-	// ..
+	// Create identity matrix
+	mat4 result;
 
-	return mat4();
+	// Obtain euler axis rotations
+	vec3 euler = quat_to_euler(q);
+
+	// Create rotation matrix with euler angles 
+	// Roll
+	mat4 R_x = mat4(cos(euler.x), -sin(euler.x), 0.0f, 0.0f,
+					sin(euler.x), cos(euler.x), 0.0f, 0.0f,
+					0.0f, 0.0f, 1.0f, 0.0f,
+					0.0f, 0.0f, 0.0f, 1.0f);
+
+	// Pitch 
+	mat4 R_y = mat4(cos(euler.y), 0.0f, sin(euler.y), 0.0f,
+					0.0f, 1.0f, 0.0f, 0.0f,
+					-sin(euler.y), 0.0f, cos(euler.y), 0.0f,
+					0.0f, 0.0f ,0.0f, 1.0f);
+
+	// Yaw
+	mat4 R_z = mat4(1.0f, 0.0f, 0.0f, 0.0f,
+					0.0f, cos(euler.z), -sin(euler.z), 0.0f,
+					0.0f, sin(euler.z), cos(euler.z), 0.0f,
+					0.0f, 0.0f, 0.0f, 1.0f);
+
+	// Compute the rotation matrix : Roll * Yaw * Pitch, R_x*R_y*R_z
+	result = R_x * R_y * R_z;
+	return result;
 }
 
 quat mat4_to_quat(const mat4& m)

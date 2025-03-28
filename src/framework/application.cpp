@@ -82,17 +82,20 @@ void Application::update(float dt)
 {
     float curr_time = glfwGetTime();
 
-  /*  vec3 first_vector = entity_list[4]->as<LineHelper>()->end;
-    vec3 second_vector = entity_list[5]->as<LineHelper>()->end;
-
-
-    entity_list[0]->material->color.x = dot(first_vector, second_vector);*/
-    
+    // Exercise 1: 
     vec3 sphere_up = vec3(entity_list[0]->get_model().forward.x, entity_list[0]->get_model().forward.y, entity_list[0]->get_model().forward.z);
     vec3 sphere_forward = vec3(entity_list[0]->get_model().up.x, entity_list[0]->get_model().up.y, entity_list[0]->get_model().up.z);
     vec3 pos = vec3(entity_list[0]->get_model().position.x, entity_list[0]->get_model().position.y, entity_list[0]->get_model().position.z);
     entity_list[0]->material->color.y = dot(pos, sphere_forward);
     entity_list[0]->material->color.x = dot(pos, sphere_up);
+
+
+    // Exercise 2: Quaternion to rotate linehelper
+    vec3 first_vector = entity_list[4]->as<LineHelper>()->end;
+    vec3 second_vector = entity_list[5]->as<LineHelper>()->end;
+    vec3 line_vector = entity_list[4]->as<LineHelper>()->end - entity_list[4]->as<LineHelper>()->origin;
+    vec3 rotated_line = entity_list[0]->get_transform().rotation * line_vector;
+
 
     // Update entities of the scene
     for (unsigned int i = 0; i < entity_list.size(); i++) {
