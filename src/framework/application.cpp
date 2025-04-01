@@ -76,6 +76,9 @@ void Application::init(GLFWwindow* window)
 
     LineHelper* quat_l7 = new LineHelper(vec3(1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
     entity_list.push_back(quat_l7);
+
+    LineHelper* quat_l8 = new LineHelper(vec3(0.f, 0.f, 0.f), vec3(0.f, 1.f, 0.0f));
+    entity_list.push_back(quat_l8);
 }
 
 void Application::update(float dt)
@@ -103,16 +106,14 @@ void Application::update(float dt)
     //entity_list[1]->set_model(model);
 
 
-
-
-
     // Exercise 2: Quaternion to rotate linehelper
-    vec3 first_vector = entity_list[4]->as<LineHelper>()->end;
-    vec3 second_vector = entity_list[5]->as<LineHelper>()->end;
-    vec3 line_vector = entity_list[4]->as<LineHelper>()->end - entity_list[4]->as<LineHelper>()->origin;
-    vec3 rotated_line = entity_list[0]->get_transform().rotation * line_vector;
-
-
+    vec3 line_vector = entity_list[11]->as<LineHelper>()->end; // line has origin 0,0,0 so we can rotate the end point of the line
+    mat4 rotation_matrix = quat_to_mat4(quat(0.250, 0.250, 0.067, 0.933)); // Rotate 30 degrees in x and y axis
+    vec4 rotated_line = rotation_matrix * vec4(line_vector.x, line_vector.y, line_vector.z,0);
+    
+    entity_list[11]->as<LineHelper>()->end = vec3(rotated_line.x, rotated_line.y, rotated_line.z);
+    
+    
     //Excersice 3: Lerp
 
     mat4 model_lerp = entity_list[3]->get_model();
