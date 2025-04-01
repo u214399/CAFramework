@@ -141,8 +141,8 @@ vec3 lerp(const vec3& s, const vec3& e, float t)
 {
 	// TODO
 	// ..
-
-	return vec3();
+	
+	return s * (1.0f - t) + e * t;
 }
 
 // Spherical linear interpolation. Interpolates on the shortest arc (if t is close to 0, it can gives unexpected results)

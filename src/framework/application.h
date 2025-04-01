@@ -10,6 +10,9 @@
 class Application
 {
 public:
+
+	bool go_back = false;
+
 	static Application* instance;
 	
 	static Camera* camera;

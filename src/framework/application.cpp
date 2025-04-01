@@ -56,26 +56,26 @@ void Application::init(GLFWwindow* window)
     LineHelper* dot_l2 = new LineHelper(vec3(-3.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
     entity_list.push_back(dot_l2);
 
-    //LineHelper* cross_l3 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
-    //cross_l3->color = vec4(1.f, 0.f, 0.f, 1.f);
-    //cross_l3->unlocked = false;
-    //entity_list.push_back(cross_l3);
+    LineHelper* cross_l3 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(0.f, 1.f, 0.f));
+    cross_l3->color = vec4(1.f, 0.f, 0.f, 1.f);
+    cross_l3->unlocked = false;
+    entity_list.push_back(cross_l3);
 
-    //LineHelper* cross_l4 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
-    //entity_list.push_back(cross_l4);
+    LineHelper* cross_l4 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
+    entity_list.push_back(cross_l4);
 
-    //LineHelper* cross_l5 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(1.f, 0.f, 0.f));
-    //cross_l5->color = vec4(0.f, 1.f, 0.f, 1.f);
-    //cross_l5->unlocked = false;
-    //entity_list.push_back(cross_l5);
+    LineHelper* cross_l5 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(1.f, 0.f, 0.f));
+    cross_l5->color = vec4(0.f, 1.f, 0.f, 1.f);
+    cross_l5->unlocked = false;
+    entity_list.push_back(cross_l5);
 
-    //LineHelper* quat_l6 = new LineHelper(vec3(1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
-    //quat_l6->color = vec4(1.f, 0.f, 0.f, 1.f);
-    //quat_l6->unlocked = false;
-    //entity_list.push_back(quat_l6);
+    LineHelper* quat_l6 = new LineHelper(vec3(1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
+    quat_l6->color = vec4(1.f, 0.f, 0.f, 1.f);
+    quat_l6->unlocked = false;
+    entity_list.push_back(quat_l6);
 
-    //LineHelper* quat_l7 = new LineHelper(vec3(1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
-    //entity_list.push_back(quat_l7);
+    LineHelper* quat_l7 = new LineHelper(vec3(1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
+    entity_list.push_back(quat_l7);
 }
 
 void Application::update(float dt)
@@ -89,12 +89,54 @@ void Application::update(float dt)
     entity_list[0]->material->color.y = dot(pos, sphere_forward);
     entity_list[0]->material->color.x = dot(pos, sphere_up);
 
+    /*vec3 first = entity_list[6]->as<LineHelper>()->end;
+    vec3 second= entity_list[7]->as<LineHelper>()->end;
+    mat4 transform;
+    transform.forward = vec4(cross(first, second),1.0);*/
+    vec3 cross_right = vec3(entity_list[1]->get_model().right.x, entity_list[1]->get_model().right.y, entity_list[1]->get_model().right.z);
+    vec3 cross_up = vec3(entity_list[1]->get_model().up.x, entity_list[1]->get_model().up.y, entity_list[1]->get_model().up.z);
+    mat4 model = entity_list[1]->get_model();
+    vec3 cross_product = cross(cross_right, cross_up);
+    //printf("%lf %lf %lf model\n", model.forward.x, model.forward.y, model.forward.z);
+    //printf("%lf %lf %lf cross\n", cross_product.x, cross_product.y, cross_product.z);
+    model.forward = vec4(cross_product, 0);
+    //entity_list[1]->set_model(model);
+
+
+
+
 
     // Exercise 2: Quaternion to rotate linehelper
     vec3 first_vector = entity_list[4]->as<LineHelper>()->end;
     vec3 second_vector = entity_list[5]->as<LineHelper>()->end;
     vec3 line_vector = entity_list[4]->as<LineHelper>()->end - entity_list[4]->as<LineHelper>()->origin;
     vec3 rotated_line = entity_list[0]->get_transform().rotation * line_vector;
+
+
+    //Excersice 3: Lerp
+
+    mat4 model_lerp = entity_list[3]->get_model();
+
+    vec3 position;
+    position.x = model_lerp.position.x;
+    position.y = model_lerp.position.y;
+    position.z = model_lerp.position.z;
+
+    vec3 original = vec3(3.f, 0.f, 0.f);
+    vec3 wanted = vec3(3.f, 2.f, 0.f);
+    vec3 new_position;
+    if (!go_back) {
+        new_position = lerp(position, wanted, 0.02);
+    }
+    else {
+        new_position = lerp(position, original, 0.02);
+    }
+
+    if (original == position) go_back = false;
+    else if (position == wanted) go_back = true;
+    
+    model_lerp.position = vec4(new_position, 0);
+    entity_list[3]->set_model(model_lerp);
 
 
     // Update entities of the scene
