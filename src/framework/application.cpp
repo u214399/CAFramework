@@ -69,7 +69,7 @@ void Application::init(GLFWwindow* window)
     cross_l5->unlocked = false;
     entity_list.push_back(cross_l5);
 
-    LineHelper* quat_l6 = new LineHelper(vec3(1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
+    LineHelper* quat_l6 = new LineHelper(vec3(-1.f, 0.f, 0.f), vec3(0.f, 0.f, 1.f));
     quat_l6->color = vec4(1.f, 0.f, 0.f, 1.f);
     quat_l6->unlocked = false;
     entity_list.push_back(quat_l6);
@@ -92,18 +92,25 @@ void Application::update(float dt)
     entity_list[0]->material->color.y = dot(pos, sphere_forward);
     entity_list[0]->material->color.x = dot(pos, sphere_up);
 
-    /*vec3 first = entity_list[6]->as<LineHelper>()->end;
-    vec3 second= entity_list[7]->as<LineHelper>()->end;
-    mat4 transform;
-    transform.forward = vec4(cross(first, second),1.0);*/
-    vec3 cross_right = vec3(entity_list[1]->get_model().right.x, entity_list[1]->get_model().right.y, entity_list[1]->get_model().right.z);
-    vec3 cross_up = vec3(entity_list[1]->get_model().up.x, entity_list[1]->get_model().up.y, entity_list[1]->get_model().up.z);
-    mat4 model = entity_list[1]->get_model();
-    vec3 cross_product = cross(cross_right, cross_up);
-    //printf("%lf %lf %lf model\n", model.forward.x, model.forward.y, model.forward.z);
-    //printf("%lf %lf %lf cross\n", cross_product.x, cross_product.y, cross_product.z);
-    model.forward = vec4(cross_product, 0);
-    //entity_list[1]->set_model(model);
+    vec3 white = entity_list[7]->as<LineHelper>()->end;
+    vec3 green = entity_list[8]->as<LineHelper>()->end;
+    vec3 red = entity_list[6]->as<LineHelper>()->end;
+    vec3 cross_product = cross(white, green);
+    quat q1 = from_to(red,cross_product);
+    Transform t1;
+    t1.rotation = q1;
+    entity_list[6]->set_transform(t1);
+    vec3 cross_forward;
+    cross_forward.x = entity_list[1]->get_model().forward.x;
+    cross_forward.y = entity_list[1]->get_model().forward.y;
+    cross_forward.z = entity_list[1]->get_model().forward.z;
+    cross_product = cross(white, cross_product);
+
+
+    q1 = from_to(cross_forward, cross_product);
+    t1.rotation = q1;
+    t1.position = vec3(-1.f, 0.f, 0.f);
+    entity_list[1]->set_transform(t1);
 
 
     // Exercise 2: Quaternion to rotate linehelper
@@ -112,6 +119,15 @@ void Application::update(float dt)
     vec4 rotated_line = rotation_matrix * vec4(line_vector.x, line_vector.y, line_vector.z,0);
     
     entity_list[11]->as<LineHelper>()->end = vec3(rotated_line.x, rotated_line.y, rotated_line.z);
+
+    //quat q(-0.4, 0.0, -0.2, 0.8);
+    //mat4 m = quat_to_mat4(q);
+    //Transform t = entity_list[4]->get_transform();
+    //mat4 model_q = entity_list[5]->get_model();
+    //t.rotation = q;
+    //model_q = model_q * m;
+    //entity_list[4]->set_transform(t);
+    //entity_list[5]->set_transform(t);
     
     
     //Excersice 3: Lerp
